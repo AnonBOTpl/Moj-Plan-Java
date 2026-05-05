@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MojPlan" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/cyan_accent</item>
+        <item name="colorPrimaryDark">@color/blue_accent</item>
+        <item name="colorAccent">@color/cyan_accent</item>
+
+        <item name="android:windowBackground">@color/app_bg</item>
+        <item name="colorSurface">@color/card_bg</item>
+        <item name="android:textColorPrimary">@color/text_main</item>
+        <item name="android:textColorSecondary">@color/text_sub</item>
+
+        <item name="colorControlNormal">@color/text_sub</item>
+        <item name="colorControlActivated">@color/cyan_accent</item>
+        
+        <item name="android:shadowColor">@android:color/transparent</item>
+    </style>
+</resources>

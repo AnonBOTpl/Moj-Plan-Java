@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cyan_accent">#00BCD4</color>
+    <color name="blue_accent">#4A90E2</color>
+
+    <color name="acc_turkusowy">#00BCD4</color>
+    <color name="acc_niebieski">#4A90E2</color>
+    <color name="acc_rozowy">#E91E63</color>
+    <color name="acc_fioletowy">#9C27B0</color>
+    <color name="acc_zielony">#4CAF50</color>
+    <color name="acc_pomaranczowy">#FF9800</color>
+
+    <color name="app_bg">#000000</color>
+    <color name="card_bg">#1C1C1E</color>
+    <color name="text_main">#FFFFFF</color>
+    <color name="text_sub">#AAAAAA</color>
+    <color name="border_color">#333333</color>
+</resources>
