@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView clockTextView, dayTextView, currentTitleTextView, currentTimeTextView;
     private TextView nextTitleTextView, nextTimeTextView, nextRoomTextView, nextCountdownTextView;
+    private TextView daysLeftTextView;
     private Spinner weekSpinner, groupSpinner;
     private LinearLayout scheduleListContainer;
     private SharedPreferences prefs;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         clockTextView = findViewById(R.id.clockTextView);
         dayTextView = findViewById(R.id.dayTextView);
+        daysLeftTextView = findViewById(R.id.daysLeftTextView);
         currentTitleTextView = findViewById(R.id.currentTitleTextView);
         currentTimeTextView = findViewById(R.id.currentTimeTextView);
         nextTitleTextView = findViewById(R.id.nextTitleTextView);
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                           R.color.acc_fioletowy, R.color.acc_zielony, R.color.acc_pomaranczowy};
         accentColor = ContextCompat.getColor(this, colorRes[index]);
         if (dayTextView != null) dayTextView.setTextColor(accentColor);
+        if (daysLeftTextView != null) daysLeftTextView.setTextColor(accentColor);
     }
 
     private void setupSpinners() {
@@ -131,6 +134,34 @@ public class MainActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         clockTextView.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cal.getTime()));
         dayTextView.setText(new SimpleDateFormat("EEEE", new Locale("pl", "PL")).format(cal.getTime()));
+
+        long dischargeDateMillis = prefs.getLong("dischargeDate", 0);
+        if (dischargeDateMillis > 0) {
+            Calendar dischargeCal = Calendar.getInstance();
+            dischargeCal.setTimeInMillis(dischargeDateMillis);
+
+            // Calculate days left
+            Calendar currentCal = Calendar.getInstance();
+            currentCal.set(Calendar.HOUR_OF_DAY, 0);
+            currentCal.set(Calendar.MINUTE, 0);
+            currentCal.set(Calendar.SECOND, 0);
+            currentCal.set(Calendar.MILLISECOND, 0);
+
+            long diffMillis = dischargeCal.getTimeInMillis() - currentCal.getTimeInMillis();
+            long daysLeft = Math.round((double) diffMillis / (1000 * 60 * 60 * 24));
+
+            if (daysLeft > 0) {
+                daysLeftTextView.setText("Dni do wyjścia: " + daysLeft);
+                daysLeftTextView.setVisibility(View.VISIBLE);
+            } else if (daysLeft == 0) {
+                daysLeftTextView.setText("Dziś jest dzień wyjścia!");
+                daysLeftTextView.setVisibility(View.VISIBLE);
+            } else {
+                daysLeftTextView.setVisibility(View.GONE);
+            }
+        } else {
+            daysLeftTextView.setVisibility(View.GONE);
+        }
 
         int currentMins = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;

@@ -12,10 +12,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.app.DatePickerDialog;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -85,7 +90,58 @@ public class SettingsActivity extends AppCompatActivity {
             sendBroadcast(i);
         });
 
+        setupDatePickers();
         updateUIColors();
+    }
+
+    private void setupDatePickers() {
+        TextView admissionDateTextView = findViewById(R.id.admissionDateTextView);
+        TextView dischargeDateTextView = findViewById(R.id.dischargeDateTextView);
+
+        long admissionDateMillis = prefs.getLong("admissionDate", 0);
+        long dischargeDateMillis = prefs.getLong("dischargeDate", 0);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+
+        if (admissionDateMillis > 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(admissionDateMillis);
+            admissionDateTextView.setText(sdf.format(cal.getTime()));
+        }
+
+        if (dischargeDateMillis > 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(dischargeDateMillis);
+            dischargeDateTextView.setText(sdf.format(cal.getTime()));
+        }
+
+        admissionDateTextView.setOnClickListener(v -> showDatePicker("admissionDate", admissionDateTextView));
+        dischargeDateTextView.setOnClickListener(v -> showDatePicker("dischargeDate", dischargeDateTextView));
+    }
+
+    private void showDatePicker(String prefKey, TextView targetTextView) {
+        Calendar cal = Calendar.getInstance();
+        long savedMillis = prefs.getLong(prefKey, 0);
+        if (savedMillis > 0) {
+            cal.setTimeInMillis(savedMillis);
+        }
+
+        DatePickerDialog dialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
+            Calendar selected = Calendar.getInstance();
+            selected.set(year, month, dayOfMonth);
+            selected.set(Calendar.HOUR_OF_DAY, 0);
+            selected.set(Calendar.MINUTE, 0);
+            selected.set(Calendar.SECOND, 0);
+            selected.set(Calendar.MILLISECOND, 0);
+
+            long millis = selected.getTimeInMillis();
+            prefs.edit().putLong(prefKey, millis).apply();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            targetTextView.setText(sdf.format(selected.getTime()));
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
+        dialog.show();
     }
 
     private void updateUIColors() {
