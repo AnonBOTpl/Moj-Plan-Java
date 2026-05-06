@@ -62,6 +62,14 @@
         android:paddingVertical="12dp"
         android:textColor="?android:attr/textColorPrimary"/>
 
+    <Switch
+        android:id="@+id/showDaysLeftSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pokaż odliczanie dni"
+        android:paddingVertical="12dp"
+        android:textColor="?android:attr/textColorPrimary"/>
+
     <Switch 
         android:id="@+id/keepScreenOnSwitch" 
         android:layout_width="match_parent" 

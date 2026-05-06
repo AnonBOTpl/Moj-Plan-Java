@@ -135,8 +135,9 @@ public class MainActivity extends AppCompatActivity {
         clockTextView.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(cal.getTime()));
         dayTextView.setText(new SimpleDateFormat("EEEE", new Locale("pl", "PL")).format(cal.getTime()));
 
+        boolean showDaysLeftOpt = prefs.getBoolean("showDaysLeft", true);
         long dischargeDateMillis = prefs.getLong("dischargeDate", 0);
-        if (dischargeDateMillis > 0) {
+        if (showDaysLeftOpt && dischargeDateMillis > 0) {
             Calendar dischargeCal = Calendar.getInstance();
             dischargeCal.setTimeInMillis(dischargeDateMillis);
 

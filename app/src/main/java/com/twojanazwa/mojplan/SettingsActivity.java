@@ -69,6 +69,12 @@ public class SettingsActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         });
 
+        Switch showDaysLeft = findViewById(R.id.showDaysLeftSwitch);
+        showDaysLeft.setChecked(prefs.getBoolean("showDaysLeft", true));
+        showDaysLeft.setOnCheckedChangeListener((b, isChecked) -> {
+            prefs.edit().putBoolean("showDaysLeft", isChecked).apply();
+        });
+
         findViewById(R.id.soundButton).setOnClickListener(v -> {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
